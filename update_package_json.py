@@ -4,8 +4,11 @@ import json
 # Obter o valor da variável de ambiente 'APP_TO_RUN'
 app_to_run = os.getenv('APP_TO_RUN')
 
+# Caminho absoluto para o arquivo package.json
+package_json_path = 'package.json'
+
 # Abrir o arquivo package.json
-with open('package.json', 'r') as file:
+with open(package_json_path, 'r') as file:
     package_data = json.load(file)
 
 # Modificar engines baseado na variável APP_TO_RUN
@@ -17,7 +20,7 @@ else:
     package_data['engines']['npm'] = '10.7.x'
 
 # Escrever de volta no arquivo package.json
-with open('package.json', 'w') as file:
+with open(package_json_path, 'w') as file:
     json.dump(package_data, file, indent=2)
 
 print(f"Pacote modificado para app '{app_to_run}' com sucesso!")

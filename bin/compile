@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# O primeiro argumento é o diretório de build passado pelo Heroku
+# O primeiro argumento é o diretório de build passado pelo Heroku (diretório raiz do projeto)
 BUILD_DIR=$1
 
 # Caminho do script Python dentro do buildpack
@@ -13,8 +13,21 @@ if [ ! -f "$SCRIPT_PATH" ]; then
   exit 1
 fi
 
+# Verifique se o arquivo package.json existe no diretório de build (raiz do projeto)
+PACKAGE_JSON="$BUILD_DIR/package.json"
+if [ ! -f "$PACKAGE_JSON" ]; then
+  echo "Erro: O arquivo package.json não foi encontrado no diretório de build."
+  exit 1
+fi
+
 # Copiar o script Python para o diretório de build
 cp "$SCRIPT_PATH" "$BUILD_DIR/"
 
+# Navegar para o diretório de build (onde o package.json está localizado)
+cd "$BUILD_DIR"
+
 # Executar o script Python para modificar o package.json
-python3 "$BUILD_DIR/update_package_json.py"
+python3 update_package_json.py
+
+# Exibir mensagem de sucesso
+echo "Pacote modificado com sucesso."
