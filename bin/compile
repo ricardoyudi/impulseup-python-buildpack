@@ -1,19 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Diretório do build (caminho onde o app será construído)
+# O primeiro argumento é o diretório de build passado pelo Heroku
 BUILD_DIR=$1
 
-# Entrar no diretório do build
-cd $BUILD_DIR
+# Caminho do script Python dentro do buildpack
+BUILDPACK_DIR=$(dirname "$0")
+SCRIPT_PATH="$BUILDPACK_DIR/../update_package_json.py"
 
-# Verificar se o Python está disponível
-if ! command -v python &> /dev/null
-then
-    echo "Python could not be found, exiting."
-    exit 1
+# Verifique se o arquivo Python existe
+if [ ! -f "$SCRIPT_PATH" ]; then
+  echo "Erro: O script update_package_json.py não foi encontrado."
+  exit 1
 fi
 
-# Executar o script Python para modificar o package.json
-python update_package_json.py
+# Copiar o script Python para o diretório de build
+cp "$SCRIPT_PATH" "$BUILD_DIR/"
 
-# Continuar com o restante da compilação
+# Executar o script Python para modificar o package.json
+python3 "$BUILD_DIR/update_package_json.py"
