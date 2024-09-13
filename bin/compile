@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Diretório do build (caminho onde o app será construído)
+BUILD_DIR=$1
+
+# Entrar no diretório do build
+cd $BUILD_DIR
+
+# Verificar se o Python está disponível
+if ! command -v python &> /dev/null
+then
+    echo "Python could not be found, exiting."
+    exit 1
+fi
+
+# Executar o script Python para modificar o package.json
+python update_package_json.py
+
+# Continuar com o restante da compilação
