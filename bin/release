@@ -1,2 +1,4 @@
 #!/bin/bash
-echo "Release phase completed."
+cat <<EOF
+---
+EOF

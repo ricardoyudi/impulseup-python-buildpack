@@ -1,4 +1,3 @@
 #!/bin/bash
-cat <<EOF
----
-EOF
+echo "Custom Buildpack for modifying package.json"
+exit 0
